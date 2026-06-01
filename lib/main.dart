@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:wuwares/api/apis.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await initGoogle();
   runApp(const MyApp());
 }
 
