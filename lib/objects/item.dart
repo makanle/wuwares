@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Item{
   final int id;
   final int price;
@@ -33,7 +31,7 @@ class Item{
       'stock': stock,
       'name': name,
       'description': description,
-      'imageurl': imageurl
+      'imageurl': imageurl,
     };
   }
 }
@@ -44,33 +42,11 @@ class ItemList{
   ItemList(
     this.items
   );
-
-  static ItemList fromJson(List<Object?> parsedJson){
-    final List<Item> result = <Item>[];
-    if(json case[
-      Iterable id,
-      Iterable price,
-      Iterable stock,
-      Iterable name,
-      Iterable description,
-      Iterable imageurl
-    ]){
-      final List idList = id.toList();
-      final List priceList = price.toList();
-      final List stockList = stock.toList();
-      final List nameList = name.toList();
-      final List descList = description.toList();
-      final List imageurlList = imageurl.toList();
-      for(int i = 0 ; i < id.length ; i++){
-        result.add(Item(id: idList[i], price: priceList[i], stock: stockList[i], name: nameList[i], description: descList[i], imageurl: imageurlList[i]));
-      }
-      return ItemList(result);  
-    }
-    throw FormatException('result cannot be deserialized, json=$json');
+  
+  factory ItemList.fromJson(List<dynamic> parsedJson){
+    var temp = parsedJson.map((itemJson) => Item.fromJson(itemJson as Map<String, dynamic>));
+    final List<Item> result = temp.toList();
+    
+    return ItemList(result);
   }
-  // factory ItemList.fromJson(List<dynamic> parsedJson){
-  //   // var maplist = List<Map<String, dynamic>>.from(json['']);
-  //   final itemsdata = parsedJson[] as List<dynamic>?;  
-  //   // final items = parsedJson.map((i) => Item.fromJson(i)).toList();
-  // }
 }

@@ -17,7 +17,7 @@ router.get('/', function (req, res){
 router.post('/add', function(req, res, next){
     var data = req.body;
     db.query(
-        `INSERT INTO item (name, price) VALUES ("${data.name}", "${data.prices}")`,
+        `INSERT INTO item (name, price, stock) VALUES ("${data.name}", "${data.prices}")`, // update ini
         (err, result) => {
             if(err){
                 return res.status(501).send({"message": "add item failed :("})
