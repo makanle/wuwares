@@ -5,7 +5,7 @@ import 'services/auth_service.dart';
 import 'services/mock_database.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/home/home_screen.dart';
-import 'package:wuwares/api/LoginApi.dart';
+import 'package:wuwares/api/UserApi.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

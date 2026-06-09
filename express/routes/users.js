@@ -44,7 +44,7 @@ router.post('/login', async function(req, res, next){
   const email = payload.email;
   db.query(
     'SELECT * FROM users WHERE email = ?',
-    email,
+    [email],
     (err, result) =>{
       if(err) return res.status(400).send({'message' : 'failed'});
 

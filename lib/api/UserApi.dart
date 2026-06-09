@@ -19,7 +19,7 @@ Future<(bool, String)> googleLogin(String selectedrole) async{
   final GoogleSignInAccount acc = await signIn.authenticate();
   final user = acc.authentication;
   var response = await post(Uri.parse("http:10.0.2.2:3000/users/login"),
-  headers: {"Content-Type": "applications/json"},
+  headers: {"Content-Type": "application/json"},
   body: jsonEncode({
     "google_token" : user.idToken,
     'role' : selectedrole,
