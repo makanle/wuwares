@@ -8,8 +8,8 @@ class AuthService extends ChangeNotifier {
   bool get isAuthenticated => _currentUser != null;
   bool get isAdmin => _currentUser?.role == UserRole.admin;
 
-  void login(String username, String email, UserRole role) {
-    _currentUser = User(username: username, email: email, role: role);
+  void updateCurrUser(User user) {
+    _currentUser = User(username: user.username, email: user.email, role: user.role);
     notifyListeners();
   }
 

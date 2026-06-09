@@ -55,7 +55,9 @@ router.post('/login', async function(req, res, next){
           [username, email, role, 'google', token],
           (err2, result2) =>{
             if(err2) return res.status(400).send({'message' : 'google register failed'});
-            return res.status(200).send(result2);
+            return res.status(200).send({
+              token: token
+            });
           }
         )
       } else{
@@ -64,13 +66,19 @@ router.post('/login', async function(req, res, next){
           [token, email],
           (err3, result3) => {
             if(err3) return res.status(400).send({'message' : 'failed to login'});
-            return res.status(200).send(result3);
+            return res.status(200).send({
+              token: token
+            });
           }
         )
       }
     }
   )
 });
+
+router.get('/profile', auth_middleware, function(req, res, next){
+  return res.status(200).send({user: req.user});
+})
 
 
 

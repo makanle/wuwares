@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wuwares/api/LoginApi.dart';
+import 'package:wuwares/api/UserApi.dart';
+import 'package:wuwares/screens/admin/admin_dashboard.dart';
+import 'package:wuwares/screens/home/user_home_screen.dart';
 import '../../models/user.dart';
 import '../../services/auth_service.dart';
 
@@ -12,22 +14,24 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _usernameController = TextEditingController();
+  // final _usernameController = TextEditingController();
   UserRole _selectedRole = UserRole.user;
-  String rolestr = "user";
+  void _handleLogin() {
+    googleLogin((_selectedRole == UserRole.user) ? "user" : "admin");
 
-  // void _handleLogin() {
-  //   if (_usernameController.text.isNotEmpty) {
-  //     context.read<AuthService>().login(
-  //           _usernameController.text,
-  //           _selectedRole,
-  //         );
-  //   } else {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(content: Text('Please enter a username')),
-  //     );
-  //   }
-  // }
+    context.read<AuthService>().updateCurrUser(getProfile() as User);
+    if(_selectedRole == UserRole.admin){
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => AdminDashboard()),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => UserHomeScreen())
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () => googleLogin((_selectedRole == UserRole.user) ? "user" : "admin"),
+                  onPressed: _handleLogin,
                   child: const Text('Login'),
                 ),
               ),
