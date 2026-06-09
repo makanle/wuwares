@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wuwares/models/transaction.dart';
+import 'package:wuwares/services/cart_service.dart';
+import 'package:wuwares/services/db_service.dart';
+import 'package:wuwares/services/transaction_service.dart';
 import '../../services/mock_database.dart';
 
 class CartScreen extends StatelessWidget {
@@ -7,8 +11,10 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final db = context.watch<MockDatabase>();
-    final cartItems = db.cart.entries.toList();
+    final db = context.watch<DbService>();
+    final usercart = context.watch<ShoppingCartService>();
+    final cartItems = usercart.cart.entries.toList();
+    final usertransaction = context.watch<TransactionService>();
 
     return Scaffold(
       appBar: AppBar(title: const Text('Your Cart')),
@@ -36,11 +42,11 @@ class CartScreen extends StatelessWidget {
                           children: [
                             IconButton(
                               icon: const Icon(Icons.remove),
-                              onPressed: () => db.removeFromCart(equipment.id),
+                              onPressed: () => db.reduceStock(equipment.id, 1),
                             ),
                             IconButton(
                               icon: const Icon(Icons.add),
-                              onPressed: () => db.addToCart(equipment.id),
+                              onPressed: () => usercart.addToCart(equipment.id),
                             ),
                           ],
                         ),
@@ -70,7 +76,7 @@ class CartScreen extends StatelessWidget {
                             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            '\$${db.totalCartPrice.toStringAsFixed(2)}',
+                            '\$${usercart.totalCartPrice.toStringAsFixed(2)}',
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -85,7 +91,7 @@ class CartScreen extends StatelessWidget {
                         height: 50,
                         child: ElevatedButton(
                           onPressed: () {
-                            db.checkout();
+                            usertransaction.checkout();
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Purchase successful!')),
                             );

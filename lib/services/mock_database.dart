@@ -64,7 +64,7 @@ class MockDatabase extends ChangeNotifier {
     }
   }
 
-  void deleteEquipment(String id) {
+  void deleteEquipment(int id) {
     _equipmentList.removeWhere((e) => e.id == id);
     _cart.remove(id);
     notifyListeners();
